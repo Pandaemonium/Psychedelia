@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#04020c">
+<title>The Blooming Dark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>
+  // surface script errors on screen when a dev flag is in the address
+  if (/[?&](debug|go|scene)\b/.test(location.search)) {
+    var showErr = function (m) { var p = document.getElementById('err'); if (p) { p.style.display = 'block'; p.textContent += m + '\n'; } };
+    window.addEventListener('error', function (e) { showErr(e.message + '  @ ' + String(e.filename).split('/').pop() + ':' + e.lineno); });
+    window.addEventListener('unhandledrejection', function (e) { showErr('promise: ' + (e.reason && (e.reason.stack || e.reason.message) || e.reason)); });
+  }
+</script>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<canvas id="bloom"></canvas>
+<canvas id="fx"></canvas>
+<div id="veil"></div>
+
+<!-- title -->
+<section id="title" class="layer">
+  <p class="over">a psychonautic puzzle voyage</p>
+  <h1 id="logo" aria-label="The Blooming Dark"></h1>
+  <p class="sub">one unfinished window &middot; one spoon of tea &middot; one night</p>
+  <div class="btns">
+    <button id="btn-begin" class="big">Begin</button>
+    <button id="btn-continue" class="big" hidden>Continue</button>
+    <button id="btn-chapters" class="big" hidden>Chapters</button>
+  </div>
+  <div class="opts">
+    <label><input type="checkbox" class="opt-sound" checked><span></span>Sound</label>
+    <label><input type="checkbox" class="opt-gentle"><span></span>Gentle visuals</label>
+  </div>
+  <p class="fine">Best with headphones, in the dark. This game is made of intense, shifting colour and light &mdash; if that troubles you, switch on Gentle visuals.</p>
+</section>
+
+<!-- chapter card and story -->
+<section id="card" class="layer"></section>
+<section id="story" class="layer"><p id="line"></p><span id="next"></span><button id="skip" title="Skip this passage" aria-label="Skip this passage">skip</button></section>
+
+<!-- in-puzzle interface -->
+<div id="hud">
+  <div class="where">
+    <div id="hud-chap"></div>
+    <div id="hud-level"></div>
+    <div id="hud-pips"></div>
+  </div>
+  <div class="tools">
+    <button id="b-hint" title="Ask Iris for a hint (H)" aria-label="Hint">
+      <svg viewBox="0 0 24 24"><path d="M2 12c3-5 6.5-7.5 10-7.5S19 7 22 12c-3 5-6.5 7.5-10 7.5S5 17 2 12z"/><circle cx="12" cy="12" r="3.4"/></svg>
+    </button>
+    <button id="b-undo" title="Step back (Z)" aria-label="Undo">
+      <svg viewBox="0 0 24 24"><path d="M8 5L3.5 9.5 8 14"/><path d="M4 9.5h10a6 6 0 010 12H9"/></svg>
+    </button>
+    <button id="b-reset" title="Begin this one again (R)" aria-label="Reset">
+      <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 11-2.6-5.9"/><path d="M20.5 3.5v5h-5"/></svg>
+    </button>
+    <button id="b-sound" title="Sound (M)" aria-label="Sound">
+      <svg viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 19V5L7.5 9.5H4z"/><path class="wave" d="M15.5 9a4.5 4.5 0 010 6M18 6.5a8 8 0 010 11"/></svg>
+    </button>
+    <button id="b-menu" title="Chapters (Esc)" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div id="help"></div>
+</div>
+
+<!-- chapters menu -->
+<section id="menu" class="layer">
+  <div class="panel">
+    <h2>The Blooming Dark</h2>
+    <div id="menu-chapters"></div>
+    <div class="opts">
+      <label><input type="checkbox" class="opt-sound" checked><span></span>Sound</label>
+      <label><input type="checkbox" class="opt-gentle"><span></span>Gentle visuals</label>
+    </div>
+    <div class="btns">
+      <button id="m-resume">Return</button>
+      <button id="m-wander" hidden>Wander</button>
+      <button id="m-full">Fullscreen</button>
+      <button id="m-title">Title</button>
+    </div>
+    <p class="keys">arrows / WASD move &middot; Z step back &middot; R begin again &middot; H hint &middot; M sound &middot; F fullscreen</p>
+  </div>
+</section>
+
+<!-- the end -->
+<section id="end" class="layer">
+  <h1 class="plain">The Blooming Dark</h1>
+  <p class="sub"></p>
+  <div class="btns">
+    <button id="e-wander" class="big">Wander the dark</button>
+    <button id="e-again" class="big">Begin again</button>
+  </div>
+</section>
+
+<div id="wander-tip">move to turn the kaleidoscope &middot; click to change worlds &middot; 1&ndash;7 worlds &middot; K unfold &middot; Esc return</div>
+<pre id="err"></pre>
+
+<script src="js/logic.js"></script>
+<script src="js/story.js"></script>
+<script src="js/core.js"></script>
+<script src="js/rose.js"></script>
+<script src="js/shader.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/puzzle-rings.js"></script>
+<script src="js/puzzle-prism.js"></script>
+<script src="js/puzzle-twins.js"></script>
+<script src="js/puzzle-void.js"></script>
+<script src="js/puzzle-thread.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
